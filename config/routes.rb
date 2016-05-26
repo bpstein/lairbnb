@@ -13,4 +13,6 @@ Rails.application.routes.draw do
                 :omniauth_callbacks => 'omniauth_callbacks'
               }
 
+  resources :users, only: [:show]
+
 end
