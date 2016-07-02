@@ -75,4 +75,5 @@ class RoomsController < ApplicationController
       :active
     )
   end
+
 end
