@@ -1,6 +1,8 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "toastr";
+@import "jquery.ui.datepicker";
+@import "themes/jquery.ui.smoothness";
 
 body {  
   color: #565a5c;
