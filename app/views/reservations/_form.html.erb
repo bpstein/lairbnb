@@ -14,11 +14,10 @@
 	<%= f.hidden_field :room_id, value: @room.id %>
 	<%= f.hidden_field :price, value: @room.price %>
 	<%= f.hidden_field :total, id: 'reservation_total' %>
-
 	
-	<div id="preview" style="display: none">
-		<h4><span id="message"></span></h4>
+	<h4><span id="message"></span></h4>
 
+	<div id="preview" style="display: none">
 		<table class="reservation-table" >
 			<tbody>
 				<tr>
@@ -31,10 +30,11 @@
 				</tr>
 			</tbody>
 		</table>
+		<br>
 	</div>
 
 	<br>
-	<%= f.submit "Book Now", class: "btn btn-primary" %>
+	<%= f.submit "Book Now", id: "btn-book", class: "btn btn-primary wide", disabled: 'true' %>
 	
 <% end %>
 
@@ -79,6 +79,28 @@
 					beforeShowDay: unavailable,
 					onSelect: function(selected) {
 						$('#reservation_start_date').datepicker("option", "maxDate", selected);
+						var start_date = $('#reservation_start_date').datepicker('getDate');
+						var end_date = $(this).datepicker('getDate');
+						var input = {
+							'start_date': start_date, 
+							'end_date': end_date,
+							'room_id': <%= @room.id %>
+						}
+						$.ajax({
+							url: "/preview",
+							data: input, 
+							success: function(data) {
+								if (data.conflict) {
+									$('#message').text("This date range is not available.");
+									$('#preview').hide();
+									$('#btn-book').attr('disabled', true);
+								} else {
+									$('#message').text("This date range is  available to rent.");
+									$('#preview').show();
+									$('#btn-book').attr('disabled', false);
+								}
+							}
+						});
 					}
 				});
 			}
