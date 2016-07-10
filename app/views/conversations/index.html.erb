@@ -5,7 +5,7 @@
       <div class="panel-body">
         <div class="container">
           <% @conversations.each do |conversation| %> 
-            <% other = conversations.sender == current_user ? conversation.recipient : conversation.sender %>
+            <% other = conversation.sender == current_user ? conversation.recipient : conversation.sender %>
 
             <% link_to conversation_messages_path(conversation) do %>
               <div class="row conversation">
@@ -25,14 +25,5 @@
         </div>
       </div>
     </div>
-
-    <h3>All Users</h3>
-    <% @users.each do |user| %> 
-      <% if user != current_user %> 
-        <%= user.fullname %> 
-        <%= link_to "Send Message", conversations_path(sender_id: current_user.id, recipient_id: user.id), method: 'post' %> 
-      <% end %> 
-      <br>
-    <% end %> 
   </div>
 </div>
