@@ -16,4 +16,13 @@ class Room < ActiveRecord::Base
   validates :summary, presence: true, length: {maximum: 500}
   validates :address, presence: true
   validates :price, numericality: { only_integer: true, greater_than: 5 }
+
+  # def show_first_photo
+  #   if #there are no photos for this room
+  #     # display the default image
+  #   else
+  #     # display the first photo of this room
+  #   end
+  # end
+
 end
