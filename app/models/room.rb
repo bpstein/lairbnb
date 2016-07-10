@@ -17,12 +17,12 @@ class Room < ActiveRecord::Base
   validates :address, presence: true
   validates :price, numericality: { only_integer: true, greater_than: 5 }
 
-  # def show_first_photo
-  #   if #there are no photos for this room
-  #     # display the default image
-  #   else
-  #     # display the first photo of this room
-  #   end
-  # end
+  def show_first_photo(size)
+    if self.photos.length == 0 
+      'http://www.thefitters.me/images/MissingPicture.jpg'
+    else
+      self.photos[0].image.url(size)
+    end
+  end
 
 end
