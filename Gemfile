@@ -21,6 +21,7 @@ gem 'jquery-ui-rails'
 gem 'private_pub'
 gem 'thin'
 gem 'ransack'
+gem 'aws-sdk', '< 2.0'
 
 group :development, :test do
   gem 'byebug'
