@@ -76,4 +76,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Development settings for Devise
+  config.action_mailer.default_url_options = { host: 'http://bs-airbnb.herokuapp.com' }
 end
