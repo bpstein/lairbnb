@@ -1,5 +1,5 @@
 class ReservationsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:notify]
 
   def preload
     room = Room.find(params[:room_id])
@@ -25,8 +25,40 @@ class ReservationsController < ApplicationController
       redirect_to room, notice: "You can't reserve your own room!"
     else
       @reservation = current_user.reservations.create(reservation_params)
-      redirect_to @reservation.room, notice: "Your reservation has been created..."
+      if @reservation
+        # send request to PayPal
+        values = {
+          business: 'bpstein-facilitator@mail.com',
+          cmd: '_xclick',
+          upload: 1, 
+          notify_url: 'http://bs-airbnb.herokuapp.com/notify',
+          amount: @reservation.total, 
+          item_name: @reservation.room.listing_name,
+          item_number: @reservation.id, 
+          quantity: '1',
+          return: 'http://bs-airbnb.herokuapp.com/your_trips'
+        }
+
+        redirect_to "https://www.sandbox.paypal.com/cgi-bin/webscr?" + values.to_query
+      else
+        redirect_to @reservation.room, alert: "Something went wrong. Please try again."
+      end
+      # redirect_to @reservation.room, notice: "Your reservation has been created..."
     end
+  end
+
+  def notify
+    params.permit!
+    status = params[:payment_status]
+
+    reservation = Reservation.find(params[:item_number])
+
+    if status = "Completed"
+      reservation.update_attributes status: true 
+    else
+      reservation.destroy
+    end
+    render nothing: true
   end
 
   def your_trips 

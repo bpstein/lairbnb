@@ -18,40 +18,28 @@
             <%= @room.user.fullname %>
           </div>
 
-          <div class="col-md-9">
+          <div class="col-md-9 room-icons">
             <h4><%= @room.listing_name %></h4>
-            <%= @room.address %>
+            <%= @room.address %><br>
 
-            <div class="row text-center row-space-1">
-              <div class="col-sm-3">
-                <i class="fa fa-home fa-2x"></i>
-              </div>
-              <div class="col-sm-3">
-                <i class="fa fa-users fa-2x"></i>
-              </div>
-              <div class="col-sm-3">
-                <i class="fa fa-bed fa-2x"></i>
-              </div>
-              <div class="col-sm-3">
-                <i class="fa fa-ship fa-2x"></i>
-              </div>
-            </div>
-
-            <div class="row text-center">
-              <div class="col-sm-3">
+            <div class="row text-center row-space-2">
+              <div class="col-sm-3 room-icons">
+                <i class="fa fa-home fa-2x"></i><br>
                 <%= @room.home_type %>
               </div>
-              <div class="col-sm-3">
+              <div class="col-sm-3 room-icons">
+                <i class="fa fa-users fa-2x"></i><br>
                 <%= @room.accommodate %> <%= @room.accommodate > 1? "Guests" : "Guest" %>
               </div>
-              <div class="col-sm-3">
+              <div class="col-sm-3 room-icons">
+                <i class="fa fa-bed fa-2x"></i><br>
                 <%= @room.bed_room %> <%= @room.bed_room > 1? "Bedrooms" : "Bedroom" %>
               </div>
-              <div class="col-sm-3">
+              <div class="col-sm-3 room-icons">
+                <i class="fa fa-tint fa-2x"></i><br>
                 <%= @room.bath_room %> <%= @room.bath_room > 1? "Bathrooms" : "Bathroom" %>
               </div>
             </div>
-
           </div>
         </div>
       </div>
