@@ -91,7 +91,7 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'http://bs-airbnb.herokuapp.com' }
 
   #Serve static assets to Heroku 
-  config.serve_static_assets = true
+  config.serve_static_files = true
   config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
   config.assets.compile = true
 end
