@@ -5,6 +5,7 @@ class ReservationsController < ApplicationController
     room = Room.find(params[:room_id])
     today = Date.today
     reservations = room.reservations.where("start_date >= ? OR end_date >= ?", today, today)
+
     render json: reservations 
   end
 
@@ -16,35 +17,30 @@ class ReservationsController < ApplicationController
       conflict: is_conflict(start_date, end_date)
     }
 
-    render json: output 
+    render json: output
   end
 
   def create
-    room = Room.find(params[:room_id])
-    if current_user == room.user
-      redirect_to room, notice: "You can't reserve your own room!"
-    else
-      @reservation = current_user.reservations.create(reservation_params)
-      if @reservation
-        # send request to PayPal
-        values = {
-          business: 'bpstein-facilitator@mail.com',
-          cmd: '_xclick',
-          upload: 1, 
-          notify_url: 'http://bs-airbnb.herokuapp.com/notify',
-          amount: @reservation.total, 
-          item_name: @reservation.room.listing_name,
-          item_number: @reservation.id, 
-          quantity: '1',
-          return: 'http://bs-airbnb.herokuapp.com/your_trips'
-        }
+    @reservation = current_user.reservations.create(reservation_params)
 
-        redirect_to "https://www.sandbox.paypal.com/cgi-bin/webscr?" + values.to_query
-      else
-        redirect_to @reservation.room, alert: "Something went wrong. Please try again."
-      end
-      # redirect_to @reservation.room, notice: "Your reservation has been created..."
-    end
+    if @reservation
+      # send request to PayPal
+      values = {
+        business: 'bpstein-facilitator@mail.com',
+        cmd: '_xclick',
+        upload: 1, 
+        notify_url: 'http://bs-airbnb.herokuapp.com/notify',
+        amount: @reservation.total, 
+        item_name: @reservation.room.listing_name,
+        item_number: @reservation.id, 
+        quantity: '1',
+        return: 'http://bs-airbnb.herokuapp.com/your_trips'
+      }
+
+      redirect_to "https://www.sandbox.paypal.com/cgi-bin/webscr?" + values.to_query
+    else
+      redirect_to @reservation.room, alert: "Oops, something went wrong..."
+    end 
   end
 
   protect_from_forgery except: [:notify]
@@ -55,15 +51,16 @@ class ReservationsController < ApplicationController
     reservation = Reservation.find(params[:item_number])
 
     if status = "Completed"
-      reservation.update_attributes status: true 
+      reservation.update_attributes status: true
     else
       reservation.destroy
     end
+
     render nothing: true
   end
 
   protect_from_forgery except: [:your_trips]
-  def your_trips 
+  def your_trips
     @trips = current_user.reservations.where("status = ?", true)
   end
 
@@ -74,8 +71,9 @@ class ReservationsController < ApplicationController
   private
     def is_conflict(start_date, end_date)
       room = Room.find(params[:room_id])
+
       check = room.reservations.where("? < start_date AND end_date < ?", start_date, end_date)
-      check.size > 0? true : false 
+      check.size > 0? true : false
     end
 
     def reservation_params
