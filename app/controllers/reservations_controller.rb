@@ -24,7 +24,6 @@ class ReservationsController < ApplicationController
     @reservation = current_user.reservations.create(reservation_params)
 
     if @reservation
-      # send request to PayPal
       values = {
         business: 'bpstein-facilitator@mail.com',
         cmd: '_xclick',
@@ -69,14 +68,15 @@ class ReservationsController < ApplicationController
   end
 
   private
-    def is_conflict(start_date, end_date)
-      room = Room.find(params[:room_id])
 
-      check = room.reservations.where("? < start_date AND end_date < ?", start_date, end_date)
-      check.size > 0? true : false
-    end
+  def is_conflict(start_date, end_date)
+    room = Room.find(params[:room_id])
 
-    def reservation_params
-      params.require(:reservation).permit(:start_date, :end_date, :price, :total, :room_id)
-    end
+    check = room.reservations.where("? < start_date AND end_date < ?", start_date, end_date)
+    check.size > 0? true : false
+  end
+
+  def reservation_params
+    params.require(:reservation).permit(:start_date, :end_date, :price, :total, :room_id)
+  end
 end
