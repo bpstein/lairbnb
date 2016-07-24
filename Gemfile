@@ -23,6 +23,7 @@ gem 'private_pub'
 gem 'thin'
 gem 'ransack'
 gem 'aws-sdk', '< 2.0'
+gem 'sendgrid-rails', '~> 2.0', '>= 2.0.5' 
 
 group :development, :test do
   gem 'byebug'
