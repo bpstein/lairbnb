@@ -29,7 +29,6 @@ Rails.application.routes.draw do
       :via => [:get, :post]
   end
 
-  resources :users, only: [:show]
   resources :rooms
   resources :photos
 
