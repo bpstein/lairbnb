@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'web_helpers'
+require 'web_helper'
 
 feature 'User can sign up' do 
 

@@ -1,5 +1,6 @@
-require 'rails_helper.rb'
-require 'web_helpers.rb'
+require 'rails_helper'
+require 'web_helper'
+require 'database_cleaner'
 
 feature 'User can add a room' do 
 
