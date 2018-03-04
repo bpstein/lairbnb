@@ -40,6 +40,7 @@ group :development, :test do
   gem 'launchy'
   gem 'rails-controller-testing'
   gem 'rspec-rails'
+  gem 'rspec-wait'
   gem 'shoulda-matchers', '~> 3.1'
   gem 'sqlite3'
   gem 'stripe-ruby-mock'
