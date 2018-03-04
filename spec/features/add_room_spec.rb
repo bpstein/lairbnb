@@ -11,8 +11,12 @@ feature 'User can add a room' do
     fill_in('Email', with: 'user@email.com')
     fill_in('Password', with: 'bananas')
     click_button('Sign up')
-    click_link('List a space')
-    # expect(current_path).to eq '/rooms/new'
+    wait_for { current_path }.to eq('/')
+    # Need to wait for 10 sec because the toastr element obscures link element
+    Capybara.using_wait_time 10 do
+      click_on 'Become a Host'
+      wait_for { current_path }.to eq('/rooms/new')
+    end
   end
 
   scenario 'user cannot add room if not signed in' do 
