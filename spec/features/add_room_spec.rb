@@ -17,9 +17,9 @@ feature 'User can add a room' do
 
   scenario 'user cannot add room if not signed in' do 
     visit '/rooms'
-    click_link('List a space')
-    expect(page).to have_link('List a space')
-    expect(current_path).to eq '/login'
+    expect(page).to have_link('Become a Host')
+    click_link('Become a Host')
+    wait_for { current_path }.to eq('/login')
   end
 
 end
